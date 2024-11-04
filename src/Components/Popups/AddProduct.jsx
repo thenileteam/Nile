@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { add, addimage, tickdouble } from "../../assets";
+import { addimage, tickdouble } from "../../assets";
 
 const AddProduct = () => {
   // State to control the popup visibility and animation
@@ -8,9 +8,27 @@ const AddProduct = () => {
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
   const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
 
+  // Form state
+  const [formData, setFormData] = useState({
+    category: "",
+    product_name: "",
+    product_description: "",
+    stock_quantity: "",
+    quantity_size: "",
+    price: "",
+    discounted_price: "",
+    stock_status: "",
+  });
+
   // Function to toggle the main popup visibility
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  // Function to handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   // Function to show the confirmation popup and hide the main popup
@@ -24,7 +42,7 @@ const AddProduct = () => {
   };
 
   // Function to handle confirmation
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     // Logic for the edit action goes here
     setFadeOut(true); // Start fade-out animation for the confirmation popup
     setTimeout(() => {
@@ -32,6 +50,14 @@ const AddProduct = () => {
       setIsFinalConfirmationOpen(true); // Open the final confirmation popup
       setFadeOut(false); // Reset fade-out state
     }, 300); // Match this duration with your CSS transition duration
+
+    try {
+      // Send a POST request to your API endpoint
+      const response = await axios.post("YOUR_API_ENDPOINT_HERE", formData);
+      console.log("Product added successfully:", response.data);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
 
     // Automatically close the final confirmation popup after 3 seconds
     setTimeout(() => {
@@ -47,6 +73,7 @@ const AddProduct = () => {
       setFadeOut(false); // Reset fade-out state
     }, 300); // Match this duration with your CSS transition duration
   };
+
   return (
     <>
       {/* Button to trigger the popup */}
@@ -121,9 +148,12 @@ const AddProduct = () => {
                     </label>
                     <input
                       id="category"
+                      name="category" // Added name attribute for form data
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
+                      value={formData.category} // Set value from state
+                      onChange={handleInputChange} // Handle input changes
                     />
                   </div>
                   <div className="mb-4">
@@ -135,9 +165,12 @@ const AddProduct = () => {
                     </label>
                     <input
                       id="product_name"
+                      name="product_name"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
+                      value={formData.product_name}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
@@ -149,9 +182,12 @@ const AddProduct = () => {
                     </label>
                     <input
                       id="product_description"
+                      name="product_description"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
+                      value={formData.product_description}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
@@ -163,9 +199,12 @@ const AddProduct = () => {
                     </label>
                     <input
                       id="stock_quantity"
+                      name="stock_quantity"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
+                      value={formData.stock_quantity}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
@@ -176,10 +215,13 @@ const AddProduct = () => {
                       Quantity Size
                     </label>
                     <input
-                      id="Quantity_Size"
+                      id="quantity_size"
+                      name="quantity_size"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
-                      placeholder="XXL"
+                      placeholder="7842"
+                      value={formData.quantity_size}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -198,9 +240,12 @@ const AddProduct = () => {
                     </label>
                     <input
                       id="price"
+                      name="price"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
+                      value={formData.price}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
@@ -212,9 +257,12 @@ const AddProduct = () => {
                     </label>
                     <input
                       id="discounted_price"
+                      name="discounted_price"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
+                      value={formData.discounted_price}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="mt-16">
@@ -226,9 +274,11 @@ const AddProduct = () => {
                     <div className="relative flex items-center mt-2">
                       {/* Custom select input */}
                       <select
-                        name="HeadlineAct"
-                        id="HeadlineAct"
+                        id="stock_status"
+                        name="stock_status"
                         className="mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10 cursor-pointer"
+                        value={formData.stock_status}
+                        onChange={handleInputChange}
                       >
                         <option value="">Choose Options</option>
                         <option value="AV">Available</option>

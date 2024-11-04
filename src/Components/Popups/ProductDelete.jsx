@@ -16,21 +16,28 @@ const ProductDelete = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  // Function to handle the "Yes" button click
-  const handleYesClick = () => {
-    setIsPopupOpen(false); // Close the main popup
-    setIsFinalConfirmationOpen(true); // Show the final confirmation popup
+  const handleYesClick = async () => {
+    try {
+      // Make the API call to delete the product
+      await axios.delete(`YOUR_API_ENDPOINT/products/${productId}`);
 
-    // Automatically start the fade-out after a short delay
-    setTimeout(() => {
-      setIsFadingOut(true); // Trigger fade-out animation
-    }, 2500); // Show the final confirmation for 2.5 seconds before fading out
+      setIsPopupOpen(false);
+      setIsFinalConfirmationOpen(true);
 
-    // Close the final confirmation popup after the fade-out completes (300ms)
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false); // Fully close the popup
-      setIsFadingOut(false); // Reset fade state
-    }, 500); // Total time = 2.5 seconds + 0.5 seconds for fade-out
+      // Start fade-out animation after a delay
+      setTimeout(() => {
+        setIsFadingOut(true);
+      }, 2500);
+
+      // Fully close the confirmation popup after fade-out completes
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+        setIsFadingOut(false);
+      }, 500);
+    } catch (error) {
+      console.error("Error deleting the product:", error);
+      alert("Failed to delete the product. Please try again.");
+    }
   };
   return (
     <>

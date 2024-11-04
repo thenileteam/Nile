@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { edit, noteedit, tickdouble } from "../../assets";
+import axios from "axios";
+import { edit, tickdouble } from "../../assets";
 
 const UserEdit = () => {
   // State to control the popup visibility and animation
@@ -7,6 +8,10 @@ const UserEdit = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
   const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
+
+  // State to handle loading and errors for the API call
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Function to toggle the main popup visibility
   const togglePopup = () => {
@@ -23,29 +28,41 @@ const UserEdit = () => {
     }, 300); // Match this duration with your CSS transition duration
   };
 
-  // Function to handle confirmation
-  const handleConfirm = () => {
-    // Logic for the edit action goes here
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
-    setTimeout(() => {
-      setIsConfirmationOpen(false); // Close the confirmation popup after the animation
-      setIsFinalConfirmationOpen(true); // Open the final confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+  // Function to handle the API request on confirmation
+  const handleConfirm = async () => {
+    setLoading(true);
+    setFadeOut(true);
+    try {
+      // Make the API call to update the user profile
+      await axios.put("/api/user/update", {
+        userId: "5678",
+        role: "Customer",
+        status: "Active", // Replace with actual dynamic values if needed
+      });
 
-    // Automatically close the final confirmation popup after 3 seconds
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false);
-    }, 1000); // 3000 + 300 to allow time for fade-out
+      setTimeout(() => {
+        setIsConfirmationOpen(false);
+        setIsFinalConfirmationOpen(true);
+        setFadeOut(false);
+      }, 300);
+    } catch (error) {
+      setError("Failed to update user profile. Please try again.");
+    } finally {
+      setLoading(false);
+      // Automatically close the final confirmation popup after 3 seconds
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+      }, 1000);
+    }
   };
 
   // Function to toggle the confirmation popup visibility
   const toggleConfirmation = () => {
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
+    setFadeOut(true);
     setTimeout(() => {
-      setIsConfirmationOpen(!isConfirmationOpen); // Toggle confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+      setIsConfirmationOpen(!isConfirmationOpen);
+      setFadeOut(false);
+    }, 300);
   };
   return (
     <>
@@ -95,7 +112,7 @@ const UserEdit = () => {
                   <div className="mb-4">
                     <label
                       htmlFor="userrole"
-                      className="block text-[#333333] text-[14px] text-left mb-2"
+                      className="block font-bold text-[#333333] text-[20px] text-left mb-2"
                     >
                       User Role
                     </label>
@@ -114,12 +131,12 @@ const UserEdit = () => {
                     <select
                       name="HeadlineAct"
                       id="HeadlineAct"
-                      className="mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10"
+                      className="mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10 cursor-pointer"
                     >
                       <option value="">Choose Options</option>
-                      <option value="JM">John Mayer</option>
-                      <option value="SRV">Stevie Ray Vaughn</option>
-                      <option value="JH">Jimi Hendrix</option>
+                      <option value="JM">Ban User</option>
+                      <option value="SRV">Suspend User</option>
+                      <option value="JH">Activate User</option>
                     </select>
                     {/* Custom arrow */}
                     <div className=" absolute inset-y-0 top-2 right-1 flex items-center px-2 pointer-events-none">
@@ -266,6 +283,9 @@ const UserEdit = () => {
           </div>
         </div>
       )}
+
+      {/* Error Message */}
+      {error && <p className="text-red-500 text-center mt-5">{error}</p>}
     </>
   );
 };

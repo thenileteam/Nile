@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { refund, tickdouble } from "../../assets";
 
 const Refund = () => {
@@ -23,29 +24,48 @@ const Refund = () => {
     }, 300); // Match this duration with your CSS transition duration
   };
 
-  // Function to handle confirmation
-  const handleConfirm = () => {
-    // Logic for the edit action goes here
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
-    setTimeout(() => {
-      setIsConfirmationOpen(false); // Close the confirmation popup after the animation
-      setIsFinalConfirmationOpen(true); // Open the final confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+  const handleConfirm = async () => {
+    setFadeOut(true);
+    try {
+      // Make API call for refund
+      const response = await axios.post("/api/refund", {
+        orderId: document.getElementById("order_id").value,
+        customerName: document.getElementById("customer_name").value,
+        orderDate: document.getElementById("order_date").value,
+        emailAddress: document.getElementById("email_address").value,
+        productName: document.getElementById("product_name").value,
+        phoneNumber: document.getElementById("phone_number").value,
+        quantity: document.getElementById("quantity").value,
+        totalAmount: document.getElementById("total_amount").value,
+      });
 
-    // Automatically close the final confirmation popup after 3 seconds
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false);
-    }, 1000); // 3000 + 300 to allow time for fade-out
+      if (response.status === 200) {
+        console.log("Refund successful:", response.data);
+        setTimeout(() => {
+          setIsConfirmationOpen(false);
+          setIsFinalConfirmationOpen(true);
+          setFadeOut(false);
+        }, 300);
+
+        setTimeout(() => {
+          setIsFinalConfirmationOpen(false);
+        }, 1000);
+      } else {
+        console.error("Refund failed:", response.data);
+        // Optionally handle failure (e.g., show an error message)
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      // Handle error (e.g., show an error message)
+    }
   };
 
-  // Function to toggle the confirmation popup visibility
   const toggleConfirmation = () => {
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
+    setFadeOut(true);
     setTimeout(() => {
-      setIsConfirmationOpen(!isConfirmationOpen); // Toggle confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+      setIsConfirmationOpen(!isConfirmationOpen);
+      setFadeOut(false);
+    }, 300);
   };
 
   return (
@@ -191,7 +211,7 @@ const Refund = () => {
                       Email Address
                     </label>
                     <input
-                      id="email"
+                      id="email_address"
                       type="email"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"

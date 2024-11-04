@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { edit, noteedit, tickdouble } from "../../assets";
+import axios from "axios";
+import { edit, tickdouble } from "../../assets";
 
 const StoreShipment = () => {
   // State to control the popup visibility and animation
@@ -103,19 +104,18 @@ const StoreShipment = () => {
                     <p className="text-[#6E6E6E] text-left">5678</p>
                   </div>
                   <h2 className="text-[18px] font-bold text-[#333333] mb-10 text-start">
-                    Order ID
+                    Carrier
                   </h2>
                   <div className="relative flex items-center">
                     {/* Custom select input */}
                     <select
                       name="HeadlineAct"
                       id="HeadlineAct"
-                      className="-mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10"
+                      className="-mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10 cursor-pointer"
                     >
                       <option value="">Choose Options</option>
-                      <option value="JM">John Mayer</option>
-                      <option value="SRV">Stevie Ray Vaughn</option>
-                      <option value="JH">Jimi Hendrix</option>
+                      <option value="FE">FedEX</option>
+                      <option value="DHL">DHL</option>
                     </select>
                     {/* Custom arrow */}
                     <div className=" absolute inset-y-0 -top-2 right-1 flex items-center px-2 pointer-events-none">

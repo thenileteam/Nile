@@ -16,22 +16,33 @@ const CancelPayout = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  // Function to handle the "Yes" button click
-  const handleYesClick = () => {
-    setIsPopupOpen(false); // Close the main popup
-    setIsFinalConfirmationOpen(true); // Show the final confirmation popup
+  const handleYesClick = async () => {
+    try {
+      // Send delete request to API
+      await axios.delete("YOUR_API_ENDPOINT", {
+        data: {
+          userId: "Samuel", // Replace with the specific user ID or identifier
+        },
+      });
 
-    // Automatically start the fade-out after a short delay
-    setTimeout(() => {
-      setIsFadingOut(true); // Trigger fade-out animation
-    }, 2500); // Show the final confirmation for 2.5 seconds before fading out
+      // Show final confirmation and start fade-out
+      setIsPopupOpen(false);
+      setIsFinalConfirmationOpen(true);
 
-    // Close the final confirmation popup after the fade-out completes (300ms)
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false); // Fully close the popup
-      setIsFadingOut(false); // Reset fade state
-    }, 500); // Total time = 2.5 seconds + 0.5 seconds for fade-out
+      setTimeout(() => {
+        setIsFadingOut(true);
+      }, 2500);
+
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+        setIsFadingOut(false);
+      }, 500);
+    } catch (error) {
+      console.error("Error cancelling payout:", error);
+      alert("Failed to cancel payout. Please try again.");
+    }
   };
+
   return (
     <>
       {/* Button to trigger the popup */}

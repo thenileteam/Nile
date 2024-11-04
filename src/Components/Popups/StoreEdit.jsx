@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { edit, noteedit, tickdouble } from "../../assets";
+import axios from "axios";
+import { edit, tickdouble } from "../../assets";
 
 const StoreEdit = () => {
   // State to control the popup visibility and animation
@@ -7,6 +8,8 @@ const StoreEdit = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
   const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
+  const [storeName, setStoreName] = useState(""); // Store name state for form input
+  const [error, setError] = useState(null); // State to handle error messages
 
   // Function to toggle the main popup visibility
   const togglePopup = () => {
@@ -23,29 +26,43 @@ const StoreEdit = () => {
     }, 200); // Match this duration with your CSS transition duration
   };
 
+  // Function to edit the store using axios
+  const editStore = async () => {
+    try {
+      const response = await axios.put("/api/store/edit", {
+        storeName,
+      });
+      console.log(response.data);
+      // Proceed to show the final confirmation popup
+      setFadeOut(true);
+      setTimeout(() => {
+        setIsConfirmationOpen(false);
+        setIsFinalConfirmationOpen(true);
+        setFadeOut(false);
+      }, 300);
+
+      // Automatically close the final confirmation popup after 3 seconds
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Failed to edit the store:", error);
+      setError("An error occurred while editing the store. Please try again.");
+    }
+  };
+
   // Function to handle confirmation
   const handleConfirm = () => {
-    // Logic for the edit action goes here
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
-    setTimeout(() => {
-      setIsConfirmationOpen(false); // Close the confirmation popup after the animation
-      setIsFinalConfirmationOpen(true); // Open the final confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
-
-    // Automatically close the final confirmation popup after 3 seconds
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false);
-    }, 1000); // 3000 + 300 to allow time for fade-out
+    editStore(); // Call the editStore function to make the API request
   };
 
   // Function to toggle the confirmation popup visibility
   const toggleConfirmation = () => {
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
+    setFadeOut(true);
     setTimeout(() => {
-      setIsConfirmationOpen(!isConfirmationOpen); // Toggle confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+      setIsConfirmationOpen(!isConfirmationOpen);
+      setFadeOut(false);
+    }, 300);
   };
   return (
     <>
@@ -92,14 +109,16 @@ const StoreEdit = () => {
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="orderid"
-                      className="block text-[#333333] text-[14px] text-left mb-2"
+                      htmlFor="storeName"
+                      className="block text-left font-bold text-[#333333] text-[20px] mb-2"
                     >
                       Store Name
                     </label>
                     <input
-                      id="order_id"
+                      id="storeName"
                       type="text"
+                      value={storeName}
+                      onChange={(e) => setStoreName(e.target.value)}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="15/09/2024"
                     />

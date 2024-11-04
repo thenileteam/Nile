@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { edit, noteedit, tickdouble } from "../../assets";
+import { edit, tickdouble } from "../../assets";
+import axios from "axios";
 
 const Edit = () => {
   // State to control the popup visibility and animation
@@ -7,6 +8,8 @@ const Edit = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
   const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
 
   // Function to toggle the main popup visibility
   const togglePopup = () => {
@@ -23,29 +26,34 @@ const Edit = () => {
     }, 300); // Match this duration with your CSS transition duration
   };
 
-  // Function to handle confirmation
-  const handleConfirm = () => {
-    // Logic for the edit action goes here
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
-    setTimeout(() => {
-      setIsConfirmationOpen(false); // Close the confirmation popup after the animation
-      setIsFinalConfirmationOpen(true); // Open the final confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+  // Function to handle the confirmation action
+  const handleConfirm = async () => {
+    setFadeOut(true);
+    try {
+      // Replace `orderId` and your API endpoint URL
+      const response = await axios.put(
+        `https://your-api-endpoint.com/orders/5621`,
+        {
+          quantity,
+          price,
+        }
+      );
+      console.log("Order updated successfully:", response.data);
 
-    // Automatically close the final confirmation popup after 3 seconds
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false);
-    }, 1000); // 3000 + 300 to allow time for fade-out
-  };
+      // Success: proceed with the final confirmation popup
+      setTimeout(() => {
+        setIsConfirmationOpen(false);
+        setIsFinalConfirmationOpen(true);
+        setFadeOut(false);
+      }, 300);
 
-  // Function to toggle the confirmation popup visibility
-  const toggleConfirmation = () => {
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
-    setTimeout(() => {
-      setIsConfirmationOpen(!isConfirmationOpen); // Toggle confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+      // Automatically close the final confirmation popup after 1 second
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error updating the order:", error);
+    }
   };
 
   return (
@@ -113,6 +121,8 @@ const Edit = () => {
                     <input
                       id="quantity"
                       type="text"
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                     />
@@ -141,6 +151,8 @@ const Edit = () => {
                     <input
                       id="price"
                       type="text"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="$7842"
                     />
@@ -218,7 +230,7 @@ const Edit = () => {
                   </h1>
                 </div>
               </button>
-              <button onClick={toggleConfirmation}>
+              <button onClick={() => setIsConfirmationOpen(false)}>
                 <div className="flex mt-10">
                   <h1 className="text-[#ffffff] hover:text-[#333333] transition ease-out duration-700 flex font-bold gap-1 items-center border-[#333333] hover:bg-[#E2E8F0] bg-[#333333] border-2 p-2 px-6 rounded-md">
                     No

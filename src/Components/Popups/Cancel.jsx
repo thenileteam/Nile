@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { cancel, storeremove } from "../../assets";
+import axios from "axios";
 
 const Cancel = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -22,17 +23,38 @@ const Cancel = () => {
     }, 300);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setFadeOut(true);
     setTimeout(() => {
       setIsConfirmationOpen(false);
-      setIsFinalConfirmationOpen(true);
       setFadeOut(false);
     }, 300);
 
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false);
-    }, 1000);
+    // Make the API call
+    try {
+      const response = await axios.post("/api/cancel-order", {
+        reason: selectedOption === "Others" ? otherReason : selectedOption,
+      });
+
+      console.log("Response:", response.data); // Log response data
+
+      // Open the final confirmation popup
+      setIsFinalConfirmationOpen(true);
+
+      // Automatically close the final confirmation popup after 1 second
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+      }, 1000);
+    } catch (error) {
+      console.error("Error canceling order:", error);
+      // Optionally show an error message to the user
+      setIsFinalConfirmationOpen(true);
+
+      // Automatically close the final confirmation popup after 1 second
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+      }, 1000);
+    }
   };
 
   const toggleConfirmation = () => {

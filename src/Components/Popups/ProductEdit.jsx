@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { changeimage, edit, noteedit, tickdouble } from "../../assets";
 
 const ProductEdit = () => {
@@ -7,6 +8,29 @@ const ProductEdit = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
   const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
+
+  // State for the product data
+  const [productData, setProductData] = useState({
+    quantity: "",
+    category: "",
+    productName: "",
+    price: "",
+    stockLevel: "",
+  });
+
+  // Fetch product data from API
+  const fetchProductData = async () => {
+    try {
+      const response = await axios.get("YOUR_API_ENDPOINT_HERE"); // Replace with your API endpoint
+      setProductData(response.data); // Assuming response.data contains the product information
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductData(); // Fetch product data when the component mounts
+  }, []);
 
   // Function to toggle the main popup visibility
   const togglePopup = () => {
@@ -24,19 +48,24 @@ const ProductEdit = () => {
   };
 
   // Function to handle confirmation
-  const handleConfirm = () => {
-    // Logic for the edit action goes here
-    setFadeOut(true); // Start fade-out animation for the confirmation popup
-    setTimeout(() => {
-      setIsConfirmationOpen(false); // Close the confirmation popup after the animation
-      setIsFinalConfirmationOpen(true); // Open the final confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 300); // Match this duration with your CSS transition duration
+  const handleConfirm = async () => {
+    try {
+      // Logic for the edit action goes here
+      await axios.put("YOUR_API_ENDPOINT_HERE", productData); // Replace with your API endpoint and pass productData
+      setFadeOut(true); // Start fade-out animation for the confirmation popup
+      setTimeout(() => {
+        setIsConfirmationOpen(false); // Close the confirmation popup after the animation
+        setIsFinalConfirmationOpen(true); // Open the final confirmation popup
+        setFadeOut(false); // Reset fade-out state
+      }, 300); // Match this duration with your CSS transition duration
 
-    // Automatically close the final confirmation popup after 3 seconds
-    setTimeout(() => {
-      setIsFinalConfirmationOpen(false);
-    }, 1000); // 3000 + 300 to allow time for fade-out
+      // Automatically close the final confirmation popup after 3 seconds
+      setTimeout(() => {
+        setIsFinalConfirmationOpen(false);
+      }, 1000); // 3000 + 300 to allow time for fade-out
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
   };
 
   // Function to toggle the confirmation popup visibility
@@ -47,6 +76,13 @@ const ProductEdit = () => {
       setFadeOut(false); // Reset fade-out state
     }, 300); // Match this duration with your CSS transition duration
   };
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setProductData((prevData) => ({ ...prevData, [id]: value }));
+  };
+
   return (
     <>
       {/* Button to trigger the popup */}
@@ -101,6 +137,8 @@ const ProductEdit = () => {
                     <input
                       id="quantity"
                       type="text"
+                      value={productData.quantity}
+                      onChange={handleChange}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                     />
@@ -115,20 +153,24 @@ const ProductEdit = () => {
                     <input
                       id="category"
                       type="text"
+                      value={productData.category}
+                      onChange={handleChange}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                     />
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="productname"
+                      htmlFor="productName"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
                       Product Name
                     </label>
                     <input
-                      id="product_name"
+                      id="productName"
                       type="text"
+                      value={productData.productName}
+                      onChange={handleChange}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                     />
@@ -157,20 +199,24 @@ const ProductEdit = () => {
                     <input
                       id="price"
                       type="text"
+                      value={productData.price}
+                      onChange={handleChange}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="$7842"
                     />
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="stocklevel"
+                      htmlFor="stockLevel"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
                       Stock Level
                     </label>
                     <input
-                      id="stock_level"
+                      id="stockLevel"
                       type="text"
+                      value={productData.stockLevel}
+                      onChange={handleChange}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="560000"
                     />

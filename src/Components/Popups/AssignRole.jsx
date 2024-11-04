@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { add, tickdouble } from "../../assets";
+import axios from "axios";
+import { tickdouble } from "../../assets";
 
 const AssignRole = () => {
   // State to control the popup visibility and animation
@@ -7,6 +8,9 @@ const AssignRole = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
   const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
+  const [userName, setUserName] = useState(""); // State for User Name
+  const [roleName, setRoleName] = useState(""); // State for Role Name
+  const [permission, setPermission] = useState(""); // State for Permission
 
   // Function to toggle the main popup visibility
   const togglePopup = () => {
@@ -24,8 +28,7 @@ const AssignRole = () => {
   };
 
   // Function to handle confirmation
-  const handleConfirm = () => {
-    // Logic for the edit action goes here
+  const handleConfirm = async () => {
     setFadeOut(true); // Start fade-out animation for the confirmation popup
     setTimeout(() => {
       setIsConfirmationOpen(false); // Close the confirmation popup after the animation
@@ -36,7 +39,20 @@ const AssignRole = () => {
     // Automatically close the final confirmation popup after 3 seconds
     setTimeout(() => {
       setIsFinalConfirmationOpen(false);
-    }, 1000); // 3000 + 300 to allow time for fade-out
+    }, 1300); // Adjusted time to allow for fade-out
+
+    // API call to assign the role
+    try {
+      const response = await axios.post("YOUR_API_ENDPOINT", {
+        userName,
+        roleName,
+        permission,
+      });
+      console.log("Role assigned successfully:", response.data);
+    } catch (error) {
+      console.error("Error assigning role:", error);
+      // Optionally, you can show an error message to the user here
+    }
   };
 
   // Function to toggle the confirmation popup visibility
@@ -47,6 +63,7 @@ const AssignRole = () => {
       setFadeOut(false); // Reset fade-out state
     }, 300); // Match this duration with your CSS transition duration
   };
+
   return (
     <>
       {/* Button to trigger the popup */}
@@ -117,6 +134,8 @@ const AssignRole = () => {
                     <input
                       id="user_name"
                       type="text"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)} // Update userName state
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="Customer"
                     />
@@ -131,6 +150,8 @@ const AssignRole = () => {
                     <input
                       id="role_name"
                       type="text"
+                      value={roleName}
+                      onChange={(e) => setRoleName(e.target.value)} // Update roleName state
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="Customer"
                     />
@@ -148,12 +169,18 @@ const AssignRole = () => {
                     <select
                       name="HeadlineAct"
                       id="HeadlineAct"
-                      className="mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10"
+                      value={permission}
+                      onChange={(e) => setPermission(e.target.value)} // Update permission state
+                      className="mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10 cursor-pointer"
                     >
                       <option value="">Choose Options</option>
-                      <option value="JM">John Mayer</option>
-                      <option value="SRV">Stevie Ray Vaughn</option>
-                      <option value="JH">Jimi Hendrix</option>
+                      <option value="FM">Financial Management</option>
+                      <option value="UM">User Management</option>
+                      <option value="CM">Content Managment</option>
+                      <option value="ST">Support & Tickets</option>
+                      <option value="SM">Store Management</option>
+                      <option value="SYM">System Management</option>
+                      <option value="RA">Report & Analysis</option>
                     </select>
                     {/* SVG arrow */}
                     <div className=" absolute inset-y-0 top-2 right-1 flex items-center px-2 pointer-events-none">
