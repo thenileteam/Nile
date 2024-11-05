@@ -274,7 +274,7 @@ const AddProduct = () => {
                       htmlFor="discountedPrice"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
-                      Dsicounted Price
+                      Discounted Price
                     </label>
                     <input
                       id="discountedPrice"
