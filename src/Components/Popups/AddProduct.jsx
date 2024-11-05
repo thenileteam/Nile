@@ -11,13 +11,14 @@ const AddProduct = () => {
   // Form state
   const [formData, setFormData] = useState({
     category: "",
-    product_name: "",
-    product_description: "",
-    stock_quantity: "",
-    quantity_size: "",
+    name: "",
+    description: "",
+    stock: "",
+    quantitySize: "",
     price: "",
-    discounted_price: "",
-    stock_status: "",
+    discountedPrice: "",
+    stockStatus: "",
+    storeId: "",
   });
 
   // Function to toggle the main popup visibility
@@ -53,7 +54,10 @@ const AddProduct = () => {
 
     try {
       // Send a POST request to your API endpoint
-      const response = await axios.post("YOUR_API_ENDPOINT_HERE", formData);
+      const response = await axios.post(
+        "https://nile-microservices.onrender.com/product/create",
+        formData
+      );
       console.log("Product added successfully:", response.data);
     } catch (error) {
       console.error("Error adding product:", error);
@@ -158,69 +162,69 @@ const AddProduct = () => {
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="productname"
+                      htmlFor="name"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
                       Product Name
                     </label>
                     <input
-                      id="product_name"
-                      name="product_name"
+                      id="name"
+                      name="name"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
-                      value={formData.product_name}
+                      value={formData.name}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="productdescription"
+                      htmlFor="description"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
                       Product Desription
                     </label>
                     <input
-                      id="product_description"
-                      name="product_description"
+                      id="description"
+                      name="description"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
-                      value={formData.product_description}
+                      value={formData.description}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="stockquantity"
+                      htmlFor="stock"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
-                      Product Name
+                      Stock Quantity
                     </label>
                     <input
-                      id="stock_quantity"
-                      name="stock_quantity"
+                      id="stock"
+                      name="stock"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
-                      value={formData.stock_quantity}
+                      value={formData.stock}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="Quantity Size"
+                      htmlFor="quantitySize"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
                       Quantity Size
                     </label>
                     <input
-                      id="quantity_size"
-                      name="quantity_size"
+                      id="quantitySize"
+                      name="quantitySize"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
-                      placeholder="7842"
-                      value={formData.quantity_size}
+                      placeholder="XXL"
+                      value={formData.quantitySize}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -230,6 +234,23 @@ const AddProduct = () => {
                     <h1 className="text-[#333333] text-[20px] font-bold">
                       Customer Informations
                     </h1>
+                  </div>
+                  <div className="mb-4 mt-5">
+                    <label
+                      htmlFor="storeID"
+                      className="block text-[#333333] text-[14px] text-left mb-2"
+                    >
+                      Store Name
+                    </label>
+                    <input
+                      id="storeID"
+                      name="storeID"
+                      type="text"
+                      className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
+                      placeholder="kulev Stores"
+                      value={formData.storeID}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div className="mb-4 mt-5">
                     <label
@@ -250,18 +271,18 @@ const AddProduct = () => {
                   </div>
                   <div className="mb-4">
                     <label
-                      htmlFor="discountedprice"
+                      htmlFor="discountedPrice"
                       className="block text-[#333333] text-[14px] text-left mb-2"
                     >
                       Dsicounted Price
                     </label>
                     <input
-                      id="discounted_price"
-                      name="discounted_price"
+                      id="discountedPrice"
+                      name="discountedPrice"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
-                      value={formData.discounted_price}
+                      value={formData.discountedPrice}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -274,10 +295,10 @@ const AddProduct = () => {
                     <div className="relative flex items-center mt-2">
                       {/* Custom select input */}
                       <select
-                        id="stock_status"
-                        name="stock_status"
+                        id="stockStatus"
+                        name="stockStatus"
                         className="mt-1.5 w-full rounded-md border-gray-500 bg-[#F5F5F5] border-2 text-gray-700 sm:text-sm p-3 appearance-none pr-10 cursor-pointer"
-                        value={formData.stock_status}
+                        value={formData.stockStatus}
                         onChange={handleInputChange}
                       >
                         <option value="">Choose Options</option>
