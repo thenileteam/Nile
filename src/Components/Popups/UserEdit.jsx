@@ -34,7 +34,7 @@ const UserEdit = () => {
     setFadeOut(true);
     try {
       // Make the API call to update the user profile
-      await axios.put("/api/user/update", {
+      await axios.put("https://nile-microservices-auth.onrender.com/users/activity", {
         userId: "5678",
         role: "Customer",
         status: "Active", // Replace with actual dynamic values if needed
@@ -46,7 +46,8 @@ const UserEdit = () => {
         setFadeOut(false);
       }, 300);
     } catch (error) {
-      setError("Failed to update user profile. Please try again.");
+      // Show error message as an alert
+      alert("Failed to update user profile. Please try again.");
     } finally {
       setLoading(false);
       // Automatically close the final confirmation popup after 3 seconds

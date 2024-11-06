@@ -20,7 +20,7 @@ const RemoveAccess = () => {
   const handleYesClick = async () => {
     try {
       // Send delete request to API
-      await axios.delete("YOUR_API_ENDPOINT", {
+      await axios.delete("https://nile-microservices-auth.onrender.com/users/access/remove/:userId", {
         data: {
           userId: "Samuel", // Replace with the specific user ID or identifier
         },

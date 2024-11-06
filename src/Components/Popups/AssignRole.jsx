@@ -43,7 +43,7 @@ const AssignRole = () => {
 
     // API call to assign the role
     try {
-      const response = await axios.post("YOUR_API_ENDPOINT", {
+      const response = await axios.post("https://nile-microservices-auth.onrender.com/users/access/:userId", {
         userName,
         roleName,
         permission,

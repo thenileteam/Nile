@@ -19,7 +19,7 @@ const ProductDelete = () => {
   const handleYesClick = async () => {
     try {
       // Make the API call to delete the product
-      await axios.delete(`YOUR_API_ENDPOINT/products/${productId}`);
+      await axios.delete(`https://nile-microservices.onrender.com/product/delete/:userId`);
 
       setIsPopupOpen(false);
       setIsFinalConfirmationOpen(true);
