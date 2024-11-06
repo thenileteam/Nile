@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { nilelogo } from "../assets";
+import Cookies from 'js-cookie';
 import { Link, useNavigate } from "react-router-dom";
+import ApiInstace from "../Components/API/ApiInstace";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,13 +14,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "https://nile-microservices-auth.onrender.com/auth/super-admin/login",
+      const response = await ApiInstace.post(
+        "/auth/super-admin/login",
         {
           email,
           password,
         }
       );
+
+      console.log(response.data);
+
+      // Set a cookie
+      Cookies.set("accessToken", response?.data?.accessToken);
+
+      // Set a cookie
+      Cookies.set("refreshToken", response?.data?.refreshToken);
+
 
       if (response.status === 200) {
         // Navigate to dashboard or perform actions after login success
