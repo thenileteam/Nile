@@ -21,7 +21,7 @@ const ProductEdit = () => {
   // Fetch product data from API
   const fetchProductData = async () => {
     try {
-      const response = await axios.get("https://nile-microservices.onrender.com/edit/:id"); // Replace with your API endpoint
+      const response = await axios.get("https://nile-microservices.onrender.com/edit"); // Replace with your API endpoint
       setProductData(response.data); // Assuming response.data contains the product information
     } catch (error) {
       console.error("Error fetching product data:", error);

@@ -29,7 +29,7 @@ const StoreEdit = () => {
   // Function to edit the store using axios
   const editStore = async () => {
     try {
-      const response = await axios.put("/https://nile-microservices-auth.onrender.com/users/stores/:userId", {
+      const response = await axios.put("/https://nile-microservices-auth.onrender.com/edit", {
         storeName,
       });
       console.log(response.data);

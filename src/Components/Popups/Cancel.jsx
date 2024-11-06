@@ -32,7 +32,7 @@ const Cancel = () => {
 
     // Make the API call
     try {
-      const response = await axios.post("/api/cancel-order", {
+      const response = await axios.post("https://nile-microservices-order.onrender.com/orders/cancel", {
         reason: selectedOption === "Others" ? otherReason : selectedOption,
       });
 

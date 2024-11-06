@@ -28,7 +28,7 @@ const Refund = () => {
     setFadeOut(true);
     try {
       // Make API call for refund
-      const response = await axios.post("/api/refund", {
+      const response = await axios.post("https://nile-microservices-order.onrender.com/orders/refund/:orderId", {
         orderId: document.getElementById("order_id").value,
         customerName: document.getElementById("customer_name").value,
         orderDate: document.getElementById("order_date").value,
@@ -49,7 +49,7 @@ const Refund = () => {
 
         setTimeout(() => {
           setIsFinalConfirmationOpen(false);
-        }, 1000);
+        }, 5000);
       } else {
         console.error("Refund failed:", response.data);
         // Optionally handle failure (e.g., show an error message)
