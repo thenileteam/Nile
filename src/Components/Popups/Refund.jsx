@@ -28,7 +28,7 @@ const Refund = () => {
     setFadeOut(true);
     try {
       // Make API call for refund
-      const response = await axios.post("https://nile-microservices-order.onrender.com/orders/refund/:orderId", {
+      const response = await axios.post("https://nile-microservices-order.onrender.com/orders/refund", {
         orderId: document.getElementById("order_id").value,
         customerName: document.getElementById("customer_name").value,
         orderDate: document.getElementById("order_date").value,

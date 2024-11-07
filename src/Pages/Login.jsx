@@ -8,28 +8,24 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
 
     try {
-      const response = await ApiInstace.post(
-        "/auth/super-admin/login",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await ApiInstace.post("/auth/super-admin/login", {
+        email,
+        password,
+      });
 
       console.log(response.data);
 
       // Set a cookie
       Cookies.set("accessToken", response?.data?.accessToken);
-
-      // Set a cookie
       Cookies.set("refreshToken", response?.data?.refreshToken);
-
 
       if (response.status === 200) {
         // Navigate to dashboard or perform actions after login success
@@ -38,6 +34,8 @@ const Login = () => {
     } catch (error) {
       setError("Invalid email or password");
       console.error("Login error:", error);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
@@ -66,7 +64,6 @@ const Login = () => {
               >
                 Email Address
               </label>
-
               <input
                 type="email"
                 id="EmailAddress"
@@ -84,7 +81,6 @@ const Login = () => {
               >
                 Password
               </label>
-
               <input
                 type="password"
                 id="Password"
@@ -126,9 +122,14 @@ const Login = () => {
             <div className="mt-5">
               <button
                 type="submit"
-                className="text-[#ffffff] bg-[#004324] w-full p-2 rounded-md"
+                className="text-[#ffffff] bg-[#004324] w-full p-2 rounded-md flex items-center justify-center"
+                disabled={loading} // Disable button while loading
               >
-                Log In
+                {loading ? (
+                  <span className="circular-loader"></span> // Circular loader
+                ) : (
+                  "Log In"
+                )}
               </button>
             </div>
 
@@ -145,6 +146,23 @@ const Login = () => {
           </form>
         </div>
       </div>
+
+      {/* Loader styling */}
+      <style>{`
+        .circular-loader {
+          border: 4px solid #f3f3f3; /* Light grey */
+          border-top: 4px solid #004324; /* Dark green for loader color */
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </>
   );
 };

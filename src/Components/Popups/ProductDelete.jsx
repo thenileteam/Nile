@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import { delete1, trash } from "../../assets";
 
 const ProductDelete = () => {
@@ -22,23 +23,24 @@ const ProductDelete = () => {
       await axios.delete(`https://nile-microservices.onrender.com/product/delete`);
 
       setIsPopupOpen(false);
-      setIsFinalConfirmationOpen(true);
+      setIsFinalConfirmationOpen(true);  // Open confirmation immediately after deletion
 
       // Start fade-out animation after a delay
       setTimeout(() => {
         setIsFadingOut(true);
-      }, 2500);
+      }, 2500); // Delay the fade-out effect
 
       // Fully close the confirmation popup after fade-out completes
       setTimeout(() => {
         setIsFinalConfirmationOpen(false);
         setIsFadingOut(false);
-      }, 500);
+      }, 3000); // Add a bit more delay to allow fade-out effect to complete
     } catch (error) {
       console.error("Error deleting the product:", error);
       alert("Failed to delete the product. Please try again.");
     }
   };
+
   return (
     <>
       {/* Button to trigger the popup */}
@@ -47,7 +49,7 @@ const ProductDelete = () => {
         className="hover:scale-110 duration-300 hover:border-[#7E76BC] border-[#ffffff] border-b-[2px] transition underline-offset-2 decoration-[2px] inline-block hover:-translate-x-1"
       >
         <div>
-          <img src={trash} alt="" />
+          <img src={trash} alt="trash icon" />
         </div>
       </button>
 
@@ -56,14 +58,14 @@ const ProductDelete = () => {
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full relative">
             <div>
               <h1 className="text-[16px] font-bold text-[#333333]">
-                Are You Sure You Want To Delete This Product ?
+                Are You Sure You Want To Delete This Product?
               </h1>
             </div>
 
             <div className="flex items-center justify-center gap-28">
               {/* Yes Button */}
               <button onClick={handleYesClick} type="button">
-                <div className=" flex mt-10">
+                <div className="flex mt-10">
                   <h1 className="text-[#333333] flex font-bold gap-1 items-center hover:border-[#ffffff] hover:bg-[#E2E8F0] transition ease-out duration-500 border-[#333333] border-2 p-2 px-6 rounded-md">
                     Yes
                   </h1>
@@ -72,7 +74,7 @@ const ProductDelete = () => {
 
               {/* No Button */}
               <button onClick={togglePopup} type="button">
-                <div className=" flex mt-10">
+                <div className="flex mt-10">
                   <h1 className="text-[#ffffff] hover:text-[#333333] transition ease-out duration-700 flex font-bold gap-1 items-center border-[#333333] hover:bg-[#E2E8F0] bg-[#333333] border-2 p-2 px-6 rounded-md">
                     No
                   </h1>
@@ -87,11 +89,7 @@ const ProductDelete = () => {
       {isFinalConfirmationOpen && (
         <div
           className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 
-          ${
-            isFadingOut
-              ? "opacity-0 transition-opacity duration-500"
-              : "opacity-100 transition-opacity duration-500"
-          }`}
+          ${isFadingOut ? "opacity-0 transition-opacity duration-500" : "opacity-100 transition-opacity duration-500"}`}
         >
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-[200px] w-full relative">
             <div>
@@ -100,7 +98,7 @@ const ProductDelete = () => {
               </h1>
             </div>
             <div className="flex justify-center mt-5">
-              <img src={delete1} alt="" />
+              <img src={delete1} alt="delete icon" />
             </div>
           </div>
         </div>

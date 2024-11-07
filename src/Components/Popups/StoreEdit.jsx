@@ -26,30 +26,31 @@ const StoreEdit = () => {
     }, 200); // Match this duration with your CSS transition duration
   };
 
-  // Function to edit the store using axios
   const editStore = async () => {
     try {
       const response = await axios.put("/https://nile-microservices-auth.onrender.com/edit", {
         storeName,
       });
       console.log(response.data);
+      
       // Proceed to show the final confirmation popup
       setFadeOut(true);
       setTimeout(() => {
         setIsConfirmationOpen(false);
         setIsFinalConfirmationOpen(true);
         setFadeOut(false);
-      }, 300);
-
+      }, 300); // Duration should match your transition time
+  
       // Automatically close the final confirmation popup after 3 seconds
       setTimeout(() => {
         setIsFinalConfirmationOpen(false);
-      }, 1000);
+      }, 3000); // Set a longer duration for visibility (e.g., 3000ms)
     } catch (error) {
       console.error("Failed to edit the store:", error);
       setError("An error occurred while editing the store. Please try again.");
     }
   };
+  
 
   // Function to handle confirmation
   const handleConfirm = () => {

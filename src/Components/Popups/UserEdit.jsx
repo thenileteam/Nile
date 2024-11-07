@@ -34,7 +34,7 @@ const UserEdit = () => {
     setFadeOut(true);
     try {
       // Make the API call to update the user profile
-      await axios.put("https://nile-microservices-auth.onrender.com/users/activity", {
+      await axios.put("https://nile-microservices-auth.onrender.com/users", {
         userId: "5678",
         role: "Customer",
         status: "Active", // Replace with actual dynamic values if needed

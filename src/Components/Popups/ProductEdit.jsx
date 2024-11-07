@@ -51,7 +51,7 @@ const ProductEdit = () => {
   const handleConfirm = async () => {
     try {
       // Logic for the edit action goes here
-      await axios.put("YOUR_API_ENDPOINT_HERE", productData); // Replace with your API endpoint and pass productData
+      await axios.put("https://nile-microservices.onrender.com/edit", productData); // Replace with your API endpoint and pass productData
       setFadeOut(true); // Start fade-out animation for the confirmation popup
       setTimeout(() => {
         setIsConfirmationOpen(false); // Close the confirmation popup after the animation
