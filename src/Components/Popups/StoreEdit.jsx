@@ -28,6 +28,8 @@ const StoreEdit = () => {
 
   const editStore = async () => {
     try {
+      await ApiInstace.delete(`/users/stores/store/delete/${store?._id}`);
+   
       const response = await axios.put("/https://nile-microservices-auth.onrender.com/edit", {
         storeName,
       });

@@ -16,12 +16,16 @@ const Login = () => {
     setLoading(true); // Start loading
 
     try {
-      const response = await ApiInstace.post("/auth/super-admin/login", {
+      const response = await ApiInstace.post("/users/auth/super-admin/login", {
         email,
         password,
       });
 
       console.log(response.data);
+
+      console.log(response.data.data.user)
+
+      localStorage.setItem ("Id",response?.data?.data?.user?._id)
 
       // Set a cookie
       Cookies.set("accessToken", response?.data?.accessToken);

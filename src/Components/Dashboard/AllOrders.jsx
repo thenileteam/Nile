@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   arrowleft,
   cancel,
@@ -18,13 +18,29 @@ import Links from "../../Links";
 import Cancel from "../Popups/Cancel";
 import Edit from "../Popups/Edit";
 import Refund from "../Popups/Refund";
+import ApiInstace from "../API/ApiInstace";
 
 const AllOrders = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedText, setSelectedText] = useState("");
+  const [orders, setOrders] = useState([]);
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await ApiInstace.get("/orders/orders/admin/orders");
+        console.log(response.data.responseObject);
+        const data = response.data.responseObject.orders;
+        console.log(data);
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching Orders:", error);
+      }
+    };
+    fetchOrders();
+  }, []);
   const closeSidebar = () => {
     if (sidebarOpen) setSidebarOpen(false);
   };
@@ -323,312 +339,46 @@ const AllOrders = () => {
                 </thead>
                 <tbody>
                   {/* Row 1 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Kunle</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Done
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 2 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Damola</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Edit />
-                      <Cancel />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 3 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Rohim</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Edit />
-                      <Cancel />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 4 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Debby</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Refund />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 5 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">James</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Refund />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 6 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Jaddy</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Refund />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 7 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Mary</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Edit />
-                      <Cancel />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
-
-                  {/* Row 8 */}
-                  <tr className="bg-[#ffffff] shadow-md">
-                    <td className="px-2 py-3 bg-[#E2E8F0]">Kelly</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      5321
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Kulev Shoes
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Lion's Den
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">57</td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      $350
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      05/11/2024
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Completed
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                      Pending
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
-                      <Edit />
-                      <Cancel />
-                    </td>
-                    <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
-                      <input
-                        type="checkbox"
-                        id="MarketingAccept"
-                        name="marketing_accept"
-                        className="size-5 rounded-md bg-white shadow-sm"
-                      />
-                    </td>
-                  </tr>
+                  {orders?.map((order, i) => (
+                    <tr className="bg-[#ffffff] shadow-md">
+                      <td className="px-2 py-3 bg-[#E2E8F0]">Kunle</td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        {order.id.slice(0, 3)}
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        Kulev Shoes
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        Lion's Den
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        57
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        $ {order.status}
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        05/11/2024
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        {order.status}
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        {order.payment || "UNPAID"}
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center">
+                        Done
+                      </td>
+                      <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">
+                        <input
+                          type="checkbox"
+                          id="MarketingAccept"
+                          name="marketing_accept"
+                          className="size-5 rounded-md bg-white shadow-sm"
+                        />
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
