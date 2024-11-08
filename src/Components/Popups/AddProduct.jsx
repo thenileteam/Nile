@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { addimage, tickdouble } from "../../assets";
-import axios from "axios";
 import ApiInstance from "../../API/ApiInstace";
 // import ApiInstance from "../API/ApiInstace";
 
