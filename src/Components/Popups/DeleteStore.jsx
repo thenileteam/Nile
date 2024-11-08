@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { delete1, trash } from "../../assets";
-import ApiInstace from "../API/ApiInstace";
+import ApiInstace from "../../API/ApiInstace";
 
-const DeleteStore = ({store}) => {
-  console.log('this is store ', store._id)
+const DeleteStore = ({ store }) => {
+  console.log("this is store ", store._id);
   // State to control the main popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -20,10 +20,9 @@ const DeleteStore = ({store}) => {
 
   const handleYesClick = async () => {
     try {
-      console.log('we clicked ')
+      console.log("we clicked ");
       // Make the API call to delete the product
-    await ApiInstace.delete(`/users/stores/store/delete/${store?._id}`);
-     
+      await ApiInstace.delete(`/users/stores/store/delete/${store?._id}`);
 
       setIsPopupOpen(false);
       setIsFinalConfirmationOpen(true);

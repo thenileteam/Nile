@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { addimage, tickdouble } from "../../assets";
 import axios from "axios";
-import ApiInstance from "../API/ApiInstace";
+import ApiInstance from "../../API/ApiInstace";
+// import ApiInstance from "../API/ApiInstace";
 
 const AddProduct = () => {
   // State to control the popup visibility and animation
@@ -15,10 +17,10 @@ const AddProduct = () => {
     category: "",
     name: "",
     description: "",
-    stock: "",
+    stock: 0,
     quantitySize: "",
-    price: "",
-    discountedPrice: "",
+    price: 0,
+    discountedPrice: 0,
     stockStatus: "",
     storeId: "",
   });
@@ -60,6 +62,10 @@ const AddProduct = () => {
         "/products/product/create",
         formData
       );
+      // const response = await axios.post(
+      //   "http://localhost:3002/products/product/create",
+      //   formData
+      // );
       console.log("Product added successfully:", response.data);
     } catch (error) {
       console.error("Error adding product:", error);
@@ -97,14 +103,14 @@ const AddProduct = () => {
               <path
                 d="M12 8V16M16 12H8"
                 stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
               <path
                 d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
                 stroke="currentColor"
-                stroke-width="1.5"
+                strokeWidth="1.5"
               />
             </svg>
             Add Product
@@ -206,7 +212,7 @@ const AddProduct = () => {
                     <input
                       id="stock"
                       name="stock"
-                      type="text"
+                      type="number"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                       value={formData.stock}
@@ -245,12 +251,12 @@ const AddProduct = () => {
                       Store Name
                     </label>
                     <input
-                      id="storeID"
-                      name="storeID"
+                      id="storeId"
+                      name="storeId"
                       type="text"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="kulev Stores"
-                      value={formData.storeID}
+                      value={formData.storeId}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -264,7 +270,7 @@ const AddProduct = () => {
                     <input
                       id="price"
                       name="price"
-                      type="text"
+                      type="number"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                       value={formData.price}
@@ -281,7 +287,7 @@ const AddProduct = () => {
                     <input
                       id="discountedPrice"
                       name="discountedPrice"
-                      type="text"
+                      type="number"
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
                       placeholder="7842"
                       value={formData.discountedPrice}
@@ -304,8 +310,8 @@ const AddProduct = () => {
                         onChange={handleInputChange}
                       >
                         <option value="">Choose Options</option>
-                        <option value="AV">Available</option>
-                        <option value="UA">Unavailable</option>
+                        <option value="AVAILABLE">Available</option>
+                        <option value="UNAVAILABLE">Unavailable</option>
                       </select>
                       {/* Custom arrow */}
                       <div className=" absolute inset-y-0 top-2 right-1 flex items-center px-2 pointer-events-none">
@@ -352,14 +358,14 @@ const AddProduct = () => {
                         <path
                           d="M12 8V16M16 12H8"
                           stroke="currentColor"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                         <path
                           d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
                           stroke="currentColor"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                         />
                       </svg>
                       Add Product

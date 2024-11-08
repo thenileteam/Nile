@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { nilelogo } from "../assets";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
-import ApiInstace from "../Components/API/ApiInstace";
+import ApiInstace from "../API/ApiInstace";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,9 +23,9 @@ const Login = () => {
 
       console.log(response.data);
 
-      console.log(response.data.data.user)
+      console.log(response.data.data.user);
 
-      localStorage.setItem ("Id",response?.data?.data?.user?._id)
+      localStorage.setItem("Id", response?.data?.data?.user?._id);
 
       // Set a cookie
       Cookies.set("accessToken", response?.data?.accessToken);
