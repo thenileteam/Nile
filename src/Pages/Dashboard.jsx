@@ -13,6 +13,11 @@ import Links from "../Links";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [metrics, setMetrics] = useState({
+    totalOrders: 0,
+    activeStores: 0,
+    totalTransactions: 0,
+  });
 
   const closeSidebar = () => {
     if (sidebarOpen) setSidebarOpen(false);
@@ -120,28 +125,28 @@ const Dashboard = () => {
                 </div>
               </div>
             </nav>
-            
+
             {/* Cards */}
             <div className="p-6 mt-28 px-32">
               <div className="flex gap-16">
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
                   <img src={saletag} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {metrics.totalOrders.toLocaleString()}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Orders</p>
                 </div>
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
                   <img src={storeverified} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {metrics.activeStores.toLocaleString()}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Active Stores</p>
                 </div>
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
                   <img src={transaction} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {metrics.totalTransactions.toLocaleString()}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Transactions</p>
                 </div>
@@ -157,7 +162,7 @@ const Dashboard = () => {
             <div className="px-28">
               <div className="border-2 border-white shadow-[0px_4px_10px_rgba(0,0,0,0.3)]"></div>
             </div>
-            
+
             {/* Table */}
             <div className="px-28">
               <table className=" w-full border-separate border-spacing-y-5">
@@ -297,7 +302,7 @@ const Dashboard = () => {
                 </tbody>
               </table>
             </div>
-            
+
             {/* Export CSV */}
             <div className=" flex px-28 justify-end mt-10">
               <h1 className="text-[#333333] cursor-pointer hover:text-[#ffffff] hover:bg-[#333333] duration-500 flex font-bold gap-1 items-center border-[#333333] border-2 p-2 rounded-md">

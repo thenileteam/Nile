@@ -20,18 +20,27 @@ const AllStore = () => {
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedText, setSelectedText] = useState("");
-
   const [stores, setStores] = useState([]);
+  const [activeStoreCount, setActiveStoreCount] = useState(0);
+  const [pendingStoreCount, setPendingStoreCount] = useState(0);
 
   useEffect(() => {
     const fetchStores = async () => {
       try {
-        const response = await ApiInstace.get('/users/stores');
+        const response = await ApiInstace.get("/users/stores");
+        const data = response.data.responseObject;
+        setStores(data);
 
-        const data =  response.data.responseObject;
-        console.log(data)
-         setStores(data);
-        
+        // Calculate store counts
+        const activeStores = data.filter(
+          (store) => store.storeStatus === "active"
+        ).length;
+        const pendingStores = data.filter(
+          (store) => store.storeStatus === "pending"
+        ).length;
+
+        setActiveStoreCount(activeStores);
+        setPendingStoreCount(pendingStores);
       } catch (error) {
         console.error("Error fetching stores:", error);
       }
@@ -188,14 +197,14 @@ const AllStore = () => {
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[300px] p-5 rounded-md">
                   <img src={storeverified} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {activeStoreCount}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Active Stores</p>
                 </div>
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[300px] p-5 rounded-md">
                   <img src={store2} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {pendingStoreCount}
                   </h1>
                   <p className="text-[#6E6E6E]">Pending Approval Stores</p>
                 </div>

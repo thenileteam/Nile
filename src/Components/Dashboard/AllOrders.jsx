@@ -26,21 +26,35 @@ const AllOrders = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedText, setSelectedText] = useState("");
   const [orders, setOrders] = useState([]);
+  const [metrics, setMetrics] = useState({
+    totalOrders: 0,
+    activeStores: 0,
+    totalTransactions: 0,
+  });
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await ApiInstace.get("/orders/orders/admin/orders");
-        console.log(response.data.responseObject);
         const data = response.data.responseObject.orders;
-        console.log(data);
         setOrders(data);
+
+        // Update metrics based on orders data
+        setMetrics({
+          totalOrders: data?.length || 0,
+          activeStores: [
+            ...new Set(data?.map((order) => order?.storeName) || []),
+          ].length,
+          totalTransactions:
+            data?.filter((order) => order?.payment === "PAID")?.length || 0,
+        });
       } catch (error) {
         console.error("Error fetching Orders:", error);
       }
     };
     fetchOrders();
   }, []);
+
   const closeSidebar = () => {
     if (sidebarOpen) setSidebarOpen(false);
   };
@@ -174,21 +188,21 @@ const AllOrders = () => {
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
                   <img src={saletag} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {metrics.totalOrders.toLocaleString()}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Orders</p>
                 </div>
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
                   <img src={storeverified} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {metrics.activeStores.toLocaleString()}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Active Stores</p>
                 </div>
                 <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
                   <img src={transaction} alt="" />
                   <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    50,0000
+                    {metrics.totalTransactions.toLocaleString()}
                   </h1>
                   <p className="text-[#6E6E6E]">Total Transactions</p>
                 </div>
@@ -343,7 +357,7 @@ const AllOrders = () => {
                     <tr className="bg-[#ffffff] shadow-md">
                       <td className="px-2 py-3 bg-[#E2E8F0]">Kunle</td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                        {order.id.slice(0, 3)}
+                        {order?.id.slice(0, 3)}
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
                         Kulev Shoes
@@ -355,16 +369,16 @@ const AllOrders = () => {
                         57
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                        $ {order.status}
+                        $ {order?.status}
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
                         05/11/2024
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                        {order.status}
+                        {order?.status}
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
-                        {order.payment || "UNPAID"}
+                        {order?.payment || "UNPAID"}
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
                         Done

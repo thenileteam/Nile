@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { delete1, trash } from "../../assets";
 import ApiInstace from "../API/ApiInstace";
+
 const DeleteStore = ({store}) => {
   console.log('this is store ', store._id)
   // State to control the main popup visibility

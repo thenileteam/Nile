@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { addimage, tickdouble } from "../../assets";
+import axios from "axios";
+import ApiInstance from "../API/ApiInstace";
 
 const AddProduct = () => {
   // State to control the popup visibility and animation
@@ -54,8 +56,8 @@ const AddProduct = () => {
 
     try {
       // Send a POST request to your API endpoint
-      const response = await axios.post(
-        "https://nile-microservices.onrender.com/product/create",
+      const response = await ApiInstance.post(
+        "/products/product/create",
         formData
       );
       console.log("Product added successfully:", response.data);
