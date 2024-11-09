@@ -388,11 +388,11 @@ const TotalProduct = () => {
                       <td className="px-2 py-3 text-[#6E6E6E] text-center flex items-center justify-center gap-3">
                         <ProductEdit
                           product={product}
-                          onEdit={() => fetchProducts()}
+                          onEdit={() => setProducts()}
                         />
                         <ProductDelete
                           productId={product.id}
-                          onDelete={() => fetchProducts()}
+                          onDelete={() => setProducts()}
                         />
                       </td>
                       <td className="px-2 py-3 text-[#6E6E6E] text-center gap-3">

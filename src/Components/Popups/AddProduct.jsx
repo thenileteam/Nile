@@ -4,7 +4,7 @@ import { addimage, tickdouble } from "../../assets";
 import ApiInstance from "../../API/ApiInstace";
 // import ApiInstance from "../API/ApiInstace";
 
-const AddProduct = () => {
+const AddProduct = ({ onProductAdded }) => {
   // State to control the popup visibility and animation
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
@@ -56,20 +56,16 @@ const AddProduct = () => {
     }, 300); // Match this duration with your CSS transition duration
 
     try {
-      // Send a POST request to your API endpoint
-      const response = await ApiInstance.post(
-        "/products/product/create",
-        formData
-      );
-      // const response = await axios.post(
-      //   "http://localhost:3002/products/product/create",
-      //   formData
-      // );
-      console.log("Product added successfully:", response.data);
+      const response = await ApiInstance.post("/products/product/create", formData);
+      if (response.data) {
+        // Close the modal/popup
+        setIsOpen(false); // or however you're handling the modal state
+        // Call the callback to refresh the parent component
+        onProductAdded();
+      }
     } catch (error) {
       console.error("Error adding product:", error);
     }
-
     // Automatically close the final confirmation popup after 3 seconds
     setTimeout(() => {
       setIsFinalConfirmationOpen(false);
