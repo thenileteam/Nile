@@ -57,15 +57,14 @@ const AddProduct = ({ onProductAdded }) => {
 
     try {
       const response = await ApiInstance.post("/products/product/create", formData);
-      if (response.data) {
-        // Close the modal/popup
-        setIsOpen(false); // or however you're handling the modal state
-        // Call the callback to refresh the parent component
+      if (response.status === 201 || response.status === 200) {
+        setIsOpen(false);
         onProductAdded();
       }
     } catch (error) {
       console.error("Error adding product:", error);
     }
+    
     // Automatically close the final confirmation popup after 3 seconds
     setTimeout(() => {
       setIsFinalConfirmationOpen(false);

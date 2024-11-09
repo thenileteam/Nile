@@ -1,36 +1,44 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { edit, tickdouble } from "../../assets";
+import ApiInstace from "../../API/ApiInstace";
 
-const StoreEdit = () => {
+const StoreEdit = ({ store }) => {  // Accept store as a prop
   // State to control the popup visibility and animation
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isFinalConfirmationOpen, setIsFinalConfirmationOpen] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false); // State for fade-out animation
-  const [storeName, setStoreName] = useState(""); // Store name state for form input
-  const [error, setError] = useState(null); // State to handle error messages
+  const [fadeOut, setFadeOut] = useState(false);
+  const [storeName, setStoreName] = useState(store?.name || ""); // Initialize with store name
+  const [error, setError] = useState(null);
 
   // Function to toggle the main popup visibility
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
+    // Reset store name when opening popup
+    setStoreName(store?.name || "");
   };
 
   // Function to show the confirmation popup and hide the main popup
   const showConfirmation = () => {
-    setFadeOut(true); // Start fade-out animation for the main popup
+    setFadeOut(true);
     setTimeout(() => {
-      setIsPopupOpen(false); // Close the main popup after the animation
-      setIsConfirmationOpen(true); // Open the confirmation popup
-      setFadeOut(false); // Reset fade-out state
-    }, 200); // Match this duration with your CSS transition duration
+      setIsPopupOpen(false);
+      setIsConfirmationOpen(true);
+      setFadeOut(false);
+    }, 200);
   };
 
   const editStore = async () => {
     try {
-      await ApiInstace.delete(`/users/stores/store/edit/${store?._id}`);
+      if (!store?._id) {
+        throw new Error("Store ID is required");
+      }
+
+      await ApiInstace.delete(`/users/stores/store/edit/${store._id}`);
    
-      const response = await axios.put("/https://nile-microservices-auth.onrender.com/edit", {
+      const response = await axios.put("https://nile-microservices-auth.onrender.com/edit", {
+        storeId: store._id,
         storeName,
       });
       console.log(response.data);
@@ -41,22 +49,21 @@ const StoreEdit = () => {
         setIsConfirmationOpen(false);
         setIsFinalConfirmationOpen(true);
         setFadeOut(false);
-      }, 300); // Duration should match your transition time
+      }, 300);
   
       // Automatically close the final confirmation popup after 3 seconds
       setTimeout(() => {
         setIsFinalConfirmationOpen(false);
-      }, 3000); // Set a longer duration for visibility (e.g., 3000ms)
+      }, 3000);
     } catch (error) {
       console.error("Failed to edit the store:", error);
       setError("An error occurred while editing the store. Please try again.");
     }
   };
-  
 
   // Function to handle confirmation
   const handleConfirm = () => {
-    editStore(); // Call the editStore function to make the API request
+    editStore();
   };
 
   // Function to toggle the confirmation popup visibility
@@ -67,6 +74,8 @@ const StoreEdit = () => {
       setFadeOut(false);
     }, 300);
   };
+
+  // Rest of your component remains the same, but update the form to use store data
   return (
     <>
       {/* Button to trigger the popup */}
@@ -108,7 +117,7 @@ const StoreEdit = () => {
                     <h1 className="text-left font-bold text-[#333333] text-[20px]">
                       Date Created
                     </h1>
-                    <p className="text-left">15/09/2024</p>
+                    <p className="text-left">{store?.dateCreated || "N/A"}</p>
                   </div>
                   <div className="mb-4">
                     <label
@@ -123,7 +132,7 @@ const StoreEdit = () => {
                       value={storeName}
                       onChange={(e) => setStoreName(e.target.value)}
                       className="w-full border-gray-500 border-2 bg-[#F5F5F5] rounded-md p-2"
-                      placeholder="15/09/2024"
+                      placeholder="Enter store name"
                     />
                   </div>
                 </div>
@@ -132,16 +141,22 @@ const StoreEdit = () => {
                     <h1 className="text-left font-bold text-[#333333] text-[20px]">
                       Store Owner
                     </h1>
-                    <p className="text-[#6E6E6E] text-left">Bola</p>
+                    <p className="text-[#6E6E6E] text-left">{store?.owner || "N/A"}</p>
                   </div>
                   <div>
                     <h1 className="text-left font-bold text-[#333333] text-[20px]">
                       Status
                     </h1>
-                    <p className="text-[#6E6E6E] text-left">Active</p>
+                    <p className="text-[#6E6E6E] text-left">{store?.status || "N/A"}</p>
                   </div>
                 </div>
               </div>
+
+              {error && (
+                <div className="text-red-500 mt-4 text-center">
+                  {error}
+                </div>
+              )}
 
               <div className="flex justify-center gap-4 mt-16">
                 {/* Edit Button */}
@@ -160,29 +175,29 @@ const StoreEdit = () => {
                     >
                       <path
                         d="M10.7892 21.9609H9.89111C6.64261 21.9609 5.01836 21.9609 4.00918 20.9358C3 19.9106 3 18.2607 3 14.9609V9.96093C3 6.6611 3 5.01119 4.00918 3.98607C5.01836 2.96094 6.64261 2.96094 9.89111 2.96094H12.8444C16.0929 2.96094 17.9907 3.01612 19 4.04125C20.0092 5.06637 20 6.6611 20 9.96093V11.1473"
-                        stroke="currentColor" // Use currentColor to make the stroke inherit the button's text color
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M16.4453 2V4M11.4453 2V4M6.44531 2V4"
-                        stroke="currentColor" // Inherit text color
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <path
                         d="M7.5 15H11.5M7.5 10H15.5"
-                        stroke="currentColor" // Inherit text color
-                        stroke-width="1.5"
-                        stroke-linecap="round"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
                       />
                       <path
                         opacity="0.93"
                         d="M21.2598 14.8785C20.3544 13.8641 19.8112 13.9245 19.2076 14.1056C18.7851 14.166 17.3365 15.8568 16.7329 16.3952C15.7419 17.3743 14.7464 18.3823 14.6807 18.5138C14.4931 18.8188 14.3186 19.3592 14.2341 19.963C14.0771 20.8688 13.8507 21.8885 14.1375 21.9759C14.4242 22.0632 15.2239 21.8954 16.1293 21.7625C16.7329 21.6538 17.1554 21.533 17.4572 21.3519C17.8797 21.0983 18.6644 20.2046 20.0164 18.8761C20.8644 17.9833 21.6823 17.3664 21.9238 16.7626C22.1652 15.8568 21.8031 15.3737 21.2598 14.8785Z"
-                        stroke="currentColor" // Inherit text color
-                        stroke-width="1.5"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
                       />
                     </svg>
                     <p>Edit Store</p>
@@ -194,7 +209,7 @@ const StoreEdit = () => {
         </div>
       )}
 
-      {/* Confirmation Modal */}
+      {/* Confirmation Modals remain the same */}
       {isConfirmationOpen && (
         <div
           className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 ${

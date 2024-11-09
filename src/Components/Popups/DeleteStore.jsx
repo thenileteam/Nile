@@ -3,7 +3,7 @@ import { delete1, trash } from "../../assets";
 import ApiInstace from "../../API/ApiInstace";
 
 const DeleteStore = ({ store }) => {
-  console.log("this is store ", store._id);
+  console.log("this is store ", store);
   // State to control the main popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
