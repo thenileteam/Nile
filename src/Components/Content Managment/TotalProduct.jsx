@@ -30,13 +30,23 @@ const TotalProduct = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await ApiInstance.get("/products/product/create");
-
+        const response = await ApiInstance.get("/products");
         const data = response.data.responseObject;
-        console.log(data);
-        setProducts(data);
+        
+        // Ensure data is an array
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else if (data && typeof data === 'object') {
+          // If data is an object but not an array, convert it to an array
+          setProducts(Object.values(data));
+        } else {
+          // If data is neither an array nor an object, set empty array
+          setProducts([]);
+          console.warn('Received invalid products data:', data);
+        }
       } catch (error) {
         console.error("Error fetching stores:", error);
+        setProducts([]); // Set empty array on error
       }
     };
     fetchProducts();
@@ -359,7 +369,7 @@ const TotalProduct = () => {
                 </thead>
 
                 <tbody>
-                  {products?.map((product, index) => (
+                  {Array.isArray(products) && products.map((product, index) => (
                     <tr key={index} className="bg-[#ffffff] shadow-md">
                       <td className="px-2 py-3 text-[#6E6E6E] text-center">
                         {product.id}

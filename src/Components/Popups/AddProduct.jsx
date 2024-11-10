@@ -57,7 +57,7 @@ const AddProduct = ({ onProductAdded }) => {
 
     try {
       const response = await ApiInstance.post("/products/product/create", formData);
-      if (response.status === 201 || response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         setIsOpen(false);
         onProductAdded();
       }

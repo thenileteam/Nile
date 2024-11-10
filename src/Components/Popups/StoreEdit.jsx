@@ -37,7 +37,7 @@ const StoreEdit = ({ store }) => {  // Accept store as a prop
 
       await ApiInstace.delete(`/users/stores/store/edit/${store._id}`);
    
-      const response = await axios.put("https://nile-microservices-auth.onrender.com/edit", {
+      const response = await axios.put(`/users/stores/store/edit/${store._id}`, {
         storeId: store._id,
         storeName,
       });
