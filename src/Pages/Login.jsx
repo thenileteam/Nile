@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { nilelogo } from "../assets";
 import Cookies from "js-cookie";
 import { Link, useNavigate } from "react-router-dom";
@@ -141,7 +141,7 @@ const Login = () => {
 
             <div className="flex items-center gap-1 justify-center mt-3">
               <h1 className="text-[#333333] text-[16px]">
-                Don't Have An Account?
+                Dont Have An Account?
               </h1>
               <Link to="#!">
                 <p className="text-[#000000] font-bold">Click Here</p>
