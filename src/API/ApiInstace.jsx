@@ -3,7 +3,7 @@ import cookie from "js-cookie"; // For client-side cookie handling
 
 // Create an Axios instance
 const ApiInstance = axios.create({
-  baseURL: "api.nile.ng", //PUT THIS IN ENV
+  baseURL: "https://api.nile.ng", //PUT THIS IN ENV
   withCredentials: true, // Enable cookies to be sent with requests
   headers: {
     "Content-Type": "application/json",
