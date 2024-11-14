@@ -1,9 +1,9 @@
 import axios from "axios";
-import cookie from "js-cookie"; // For client-side cookie handling
+import cookie from "js-cookie";
 
 // Create an Axios instance
 const ApiInstance = axios.create({
-  baseURL: "https://api.nile.ng", //PUT THIS IN ENV
+  baseURL: "https://api.nile.ng",
   withCredentials: true, // Enable cookies to be sent with requests
   headers: {
     "Content-Type": "application/json",
@@ -12,13 +12,12 @@ const ApiInstance = axios.create({
 
 // Helper function to get the token from cookies
 const getTokenFromCookies = () => {
-  return cookie.get("accessToken"); // Assumes the token is stored in a cookie named 'token'
+  return cookie.get("accessToken");
 };
-
 // Add a request interceptor to dynamically attach the token
 ApiInstance.interceptors.request.use(
   (config) => {
-    const token = getTokenFromCookies(); // Get token from cookies
+    const token = getTokenFromCookies();
     console.log(token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

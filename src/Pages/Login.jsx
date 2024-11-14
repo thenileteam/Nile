@@ -1,45 +1,24 @@
 import { useState } from "react";
 import { nilelogo } from "../assets";
-import Cookies from "js-cookie";
-import { Link, useNavigate } from "react-router-dom";
-import ApiInstace from "../API/ApiInstace";
+
+import { Link } from "react-router-dom";
+import { useLogUserIn } from "../datahooks/users/userhooks";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Add loading state
-  const navigate = useNavigate();
 
+  const { mutate, isPending } = useLogUserIn();
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
-
+    console.log(isPending);
     try {
-      const response = await ApiInstace.post("/users/auth/super-admin/login", {
+      mutate({
         email,
         password,
       });
-
-      console.log(response);
-
-      console.log(response.data.data.user);
-
-      localStorage.setItem("Id", response?.data?.data?.user?._id);
-
-      // Set a cookie
-      Cookies.set("accessToken", response?.data?.accessToken);
-      Cookies.set("refreshToken", response?.data?.refreshToken);
-
-      if (response.status === 200) {
-        // Navigate to dashboard or perform actions after login success
-        navigate("/dashboard");
-      }
     } catch (error) {
-      setError("Invalid email or password");
       console.error("Login error:", error);
-    } finally {
-      setLoading(false); // End loading
     }
   };
 
@@ -127,9 +106,9 @@ const Login = () => {
               <button
                 type="submit"
                 className="text-[#ffffff] bg-[#004324] w-full p-2 rounded-md flex items-center justify-center"
-                disabled={loading} // Disable button while loading
+                disabled={isPending} // Disable button while loading
               >
-                {loading ? (
+                {isPending ? (
                   <span className="circular-loader"></span> // Circular loader
                 ) : (
                   "Log In"
@@ -137,11 +116,11 @@ const Login = () => {
               </button>
             </div>
 
-            {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+            {/* {error && <p className="text-red-500 text-center mt-4">{error}</p>} */}
 
             <div className="flex items-center gap-1 justify-center mt-3">
               <h1 className="text-[#333333] text-[16px]">
-                Dont Have An Account?
+                Don&apos;t Have An Account?
               </h1>
               <Link to="#!">
                 <p className="text-[#000000] font-bold">Click Here</p>

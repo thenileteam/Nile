@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./Pages/Signup";
 import Dashboard from "./Pages/Dashboard";
@@ -30,49 +29,55 @@ import TotalProduct from "./Components/Content Managment/TotalProduct";
 import Notification from "./Pages/Notification";
 import ForgotPassword from "./Pages/ForgotPassword";
 import EditProfile from "./Pages/EditProfile";
+import { Toaster } from "sonner";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const App = () => {
+  const queryClient = new QueryClient();
   return (
     <>
-      <Router>
-        <div>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/allorders" element={<AllOrders />} />
-            <Route path="/neworders" element={<NewOrders />} />
-            <Route path="/pendingorders" element={<PendingOrders />} />
-            <Route path="/completedorders" element={<CompletedOrders />} />
-            <Route path="/cancelledorders" element={<CancelledOrders />} />
-            <Route
-              path="/bestsellingproduct"
-              element={<BestsellingProduct />}
-            />
-            <Route path="/lowinventory" element={<LowInventory />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/totalusers" element={<TotalUsers />} />
-            <Route path="/roleassignment" element={<RoleAssignment />} />
-            <Route path="/useractivities" element={<UserActivities />} />
-            <Route path="/store" element={<Store />} />
-            <Route path="/allstore" element={<AllStore />} />
-            <Route path="/storeapprovals" element={<ApprovedStores />} />
-            <Route path="/storeanalytics" element={<StoreAnalytics />} />
-            <Route path="/shipment" element={<Shipment />} />
-            <Route path="/financial" element={<Financial />} />
-            <Route path="/totaltransactions" element={<TotalTransaction />} />
-            <Route path="/totalpayouts" element={<TotalPayout />} />
-            <Route path="/totalinvoice" element={<TotalInvoice />} />
-            <Route path="/financialreport" element={<FinancialReports />} />
-            <Route path="/contentmanagement" element={<Content />} />
-            <Route path="/totalproducts" element={<TotalProduct />} />
-            <Route path="/notification" element={<Notification />} />
-            <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/profile" element={<EditProfile />} />
-          </Routes>
-        </div>
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Toaster richColors />
+        <Router>
+          <div>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/allorders" element={<AllOrders />} />
+              <Route path="/neworders" element={<NewOrders />} />
+              <Route path="/pendingorders" element={<PendingOrders />} />
+              <Route path="/completedorders" element={<CompletedOrders />} />
+              <Route path="/cancelledorders" element={<CancelledOrders />} />
+              <Route
+                path="/bestsellingproduct"
+                element={<BestsellingProduct />}
+              />
+              <Route path="/lowinventory" element={<LowInventory />} />
+              <Route path="/user" element={<User />} />
+              <Route path="/totalusers" element={<TotalUsers />} />
+              <Route path="/roleassignment" element={<RoleAssignment />} />
+              <Route path="/useractivities" element={<UserActivities />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/allstore" element={<AllStore />} />
+              <Route path="/storeapprovals" element={<ApprovedStores />} />
+              <Route path="/storeanalytics" element={<StoreAnalytics />} />
+              <Route path="/shipment" element={<Shipment />} />
+              <Route path="/financial" element={<Financial />} />
+              <Route path="/totaltransactions" element={<TotalTransaction />} />
+              <Route path="/totalpayouts" element={<TotalPayout />} />
+              <Route path="/totalinvoice" element={<TotalInvoice />} />
+              <Route path="/financialreport" element={<FinancialReports />} />
+              <Route path="/contentmanagement" element={<Content />} />
+              <Route path="/totalproducts" element={<TotalProduct />} />
+              <Route path="/notification" element={<Notification />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/profile" element={<EditProfile />} />
+            </Routes>
+          </div>
+        </Router>
+      </QueryClientProvider>
     </>
   );
 };

@@ -1,4 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import {
   image,
   nilelogo,
@@ -10,15 +13,20 @@ import {
 } from "../assets";
 import { Link } from "react-router-dom";
 import Links from "../Links";
+import { useFetchDashboardData } from "../datahooks/users/userhooks";
 
 const Dashboard = () => {
+  const { data, isFetching, isError } = useFetchDashboardData();
+  console.log(data);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [metrics, setMetrics] = useState({
-    totalOrders: 0,
-    activeStores: 0,
+    totalOrders: data ? data?.orders?.responseObject?.meta?.totalOrders : 0,
+    activeStores: data ? data?.stores?.responseObject?.length : 0,
     totalTransactions: 0,
   });
 
+  console.log(data.orders.responseObject.meta.totalOrders);
+  console.log(data?.stores?.responseObject.length);
   const closeSidebar = () => {
     if (sidebarOpen) setSidebarOpen(false);
   };
@@ -128,35 +136,44 @@ const Dashboard = () => {
 
             {/* Cards */}
             <div className="p-6 mt-28 px-32">
-              <div className="flex gap-16">
-                <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
-                  <img src={saletag} alt="" />
-                  <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    {metrics.totalOrders.toLocaleString()}
-                  </h1>
-                  <p className="text-[#6E6E6E]">Total Orders</p>
+              {isFetching ? (
+                <div className=" flex gap-4">
+                  <Skeleton width={216} height={200} />
+                  <Skeleton width={216} height={200} />
+                  <Skeleton width={216} height={200} />
+                  <Skeleton width={216} height={200} />
                 </div>
-                <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
-                  <img src={storeverified} alt="" />
-                  <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    {metrics.activeStores.toLocaleString()}
-                  </h1>
-                  <p className="text-[#6E6E6E]">Total Active Stores</p>
+              ) : (
+                <div className="flex gap-16">
+                  <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
+                    <img src={saletag} alt="" />
+                    <h1 className="text-[#333333] text-[22px] font-bold mt-1">
+                      {metrics.totalOrders}
+                    </h1>
+                    <p className="text-[#6E6E6E]">Total Orders</p>
+                  </div>
+                  <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
+                    <img src={storeverified} alt="" />
+                    <h1 className="text-[#333333] text-[22px] font-bold mt-1">
+                      {metrics.activeStores}
+                    </h1>
+                    <p className="text-[#6E6E6E]">Total Active Stores</p>
+                  </div>
+                  <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
+                    <img src={transaction} alt="" />
+                    <h1 className="text-[#333333] text-[22px] font-bold mt-1">
+                      {metrics.totalTransactions.toLocaleString()}
+                    </h1>
+                    <p className="text-[#6E6E6E]">Total Transactions</p>
+                  </div>
+                  <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
+                    <img src={uptown} alt="" />
+                    <h1 className="text-[#333333] font-bold text-[24px]">
+                      System Health
+                    </h1>
+                  </div>
                 </div>
-                <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
-                  <img src={transaction} alt="" />
-                  <h1 className="text-[#333333] text-[22px] font-bold mt-1">
-                    {metrics.totalTransactions.toLocaleString()}
-                  </h1>
-                  <p className="text-[#6E6E6E]">Total Transactions</p>
-                </div>
-                <div className="bg-[#FFFFFF] border-2 shadow-sm w-[216px] p-5 rounded-md">
-                  <img src={uptown} alt="" />
-                  <h1 className="text-[#333333] font-bold text-[24px]">
-                    System Health
-                  </h1>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="px-28">
@@ -317,13 +334,13 @@ const Dashboard = () => {
                   <path
                     d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
                     stroke="currentColor"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                   />
                   <path
                     d="M12.0025 7.03906V14.0894M12.0025 14.0894C12.3286 14.0938 12.6503 13.8696 12.8876 13.5961L14.4771 11.8134M12.0025 14.0894C11.6879 14.0852 11.3693 13.8623 11.1174 13.596L9.51864 11.8134M7.98633 17.0391H15.9863"
                     stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
                   />
                 </svg>
                 Export CSV
